@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Btn = styled.div`
   border: solid 1px #666;
-  border-radius: 15%;
+  border-radius: 6%;
   line-height: 1;
   box-sizing: border-box;
   display: inline-block;
@@ -19,6 +19,7 @@ const Btn = styled.div`
 interface IProps {
   children: ReactNode;
   color?: 'red' | 'grey' | 'white';
+  cb: (...args: any[]) => void;
 }
 
 const Button: FC<IProps> = ({ color = 'grey', children }) => {

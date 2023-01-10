@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import styled from 'styled-components';
 import { GlobalStyle } from './styles/GlobalStyle';
 import Button from './Atoms/Button';
@@ -10,13 +9,18 @@ const Title = styled.h1`
 `;
 
 function App() {
+
+  const test = () => {
+    window.alert('clicked');
+  }
+
   return (
     <>
       <GlobalStyle />
       <div>
         happy
         <Title>타이틀?</Title>
-        <Button>text</Button>
+        <Button cb={test}>버튼</Button>
       </div>
     </>
   );
