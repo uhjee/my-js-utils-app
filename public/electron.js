@@ -1,6 +1,9 @@
 const { app, BrowserWindow, protocol } = require('electron');
 const path = require('path');
 const url = require('url');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 /**
  * electron setting
@@ -26,7 +29,7 @@ function createWindow() {
     });
 
     win.loadURL(startUrl);
-    win.webContents.openDevTools(); // activiate devtool 
+    win.webContents.openDevTools(); // activiate devtool
 }
 
 app.on('ready', createWindow);

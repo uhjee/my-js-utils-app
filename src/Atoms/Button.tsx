@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, {FC, MouseEventHandler, ReactNode, useCallback} from 'react';
 import styled from 'styled-components';
 
 const Btn = styled.div`
@@ -17,13 +17,22 @@ const Btn = styled.div`
 `;
 
 interface IProps {
-  children: ReactNode;
-  color?: 'red' | 'grey' | 'white';
-  cb: (...args: any[]) => void;
+    children: ReactNode;
+    color?: 'red' | 'grey' | 'white';
+    cb: (...args: any[]) => void;
 }
 
-const Button: FC<IProps> = ({ color = 'grey', children }) => {
-  return <Btn>{children}</Btn>;
+const Button: FC<IProps> = ({color = 'grey', children, cb}) => {
+    const onClickBtn: MouseEventHandler<HTMLDivElement> = useCallback(
+        (e) => {
+            e.stopPropagation();
+            cb();
+        },
+        [cb],
+    );
+
+
+    return <Btn onClick={onClickBtn}>{children}</Btn>;
 };
 
 export default Button;

@@ -11,7 +11,7 @@ const Title = styled.h1`
 function App() {
 
   const test = () => {
-    window.alert('clicked');
+      console.log(process.env.ELECTRON_START_URL);
   }
 
   return (
