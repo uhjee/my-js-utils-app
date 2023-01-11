@@ -12,7 +12,7 @@ const Container = styled.div`
 `;
 
 const ContentContainer = styled.div`
-  padding: 20px 26px;
+  /* padding: 20px 26px; */
   width: 100%;
 `;
 

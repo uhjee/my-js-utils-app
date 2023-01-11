@@ -9,6 +9,24 @@ const Box = styled.div`
   background-color: green;
 `;
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const TitleBar = styled.div`
+  padding: 8px 14px;
+  font-size: 1.4em;
+  margin-bottom: 8px;
+  height: 38px;
+`;
+
+const ContentContainer = styled.div`
+  padding: 10px 18px;
+`;
+
+const title = 'Differrence Object';
+
 const DifferenceObject = () => {
   const [cnt, setCnt] = useState<number>(0);
 
@@ -16,17 +34,19 @@ const DifferenceObject = () => {
     setCnt(cnt + 1);
   };
   return (
-    <div>
-      DifferenceObject
-      {cnt}
-      <div>
-        <Button cb={countUp}>count + 1</Button>
-      </div>
-      {!!cnt &&
-        Array(cnt)
-          .fill(1)
-          .map((_, index) => <Box key={index} />)}
-    </div>
+    <Container>
+      <TitleBar>{title}</TitleBar>
+      <ContentContainer>
+        {cnt}
+        <div>
+          <Button cb={countUp}>count + 1</Button>
+        </div>
+        {!!cnt &&
+          Array(cnt)
+            .fill(1)
+            .map((_, index) => <Box key={index} />)}
+      </ContentContainer>
+    </Container>
   );
 };
 
