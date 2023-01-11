@@ -10,6 +10,7 @@ const Btn = styled.div`
   padding: 4px 8px;
   margin: 2px 4px;
   cursor: pointer;
+  user-select: none;
 
   &:hover {
     font-weight: 600;
