@@ -1,11 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
-import { MENU_PROPS } from '../types/common';
-import DifferenceObject from './DifferenceObject';
+import { TITLE_TEXT } from '../constants/layout';
+import { MENU_PROPS } from '../types/layout';
 
 const Container = styled.aside<{ width: string }>`
-  border-right: 1px solid #7e7976;
-  background-color: var(--default-background-color);
+  border-right: 1px solid var(--warm-grey);
+  background-color: var(--black);
   box-sizing: border-box;
   /* margin-right: 16px; */
   width: ${({ width }) => width};
@@ -25,26 +25,28 @@ const Menu = styled.div<{ isActive: boolean }>`
   font-size: 0.84em;
   margin-bottom: 12px;
   cursor: pointer;
-  ${({ isActive }) => (isActive ? 'color: #da9967;' : '')}
+  ${({ isActive }) => (isActive ? 'color: var(--orange);' : '')}
   &:hover {
     font-weight: 600;
   }
 `;
-
-// type MENU_PROPS = 'DIFF_OBJECT' | 'ETC';
 
 interface IMenu {
   title: string;
   prop: MENU_PROPS;
 }
 
-export const MENUS: IMenu[] = [
+const MENUS: IMenu[] = [
   {
-    title: 'difference object',
+    title: TITLE_TEXT.DIFF_OBJECT,
     prop: MENU_PROPS.DIFF_OBJECT,
   },
   {
-    title: 'etc',
+    title: TITLE_TEXT.MYBATIS_PARSER,
+    prop: MENU_PROPS.MYBATIS_PARSER,
+  },
+  {
+    title: TITLE_TEXT.ETC,
     prop: MENU_PROPS.ETC,
   },
 ];
@@ -55,13 +57,13 @@ interface IProps {
 }
 
 const SideBar: FC<IProps> = ({ selectedMenu, setSelectedMenu }) => {
-  //   const [selectedMenu, setSelectedMenu] = useState<MENU_PROPS>(
-  //     MENU_PROPS.DIFF_OBJECT,
-  //   );
+  const onClickMenu = useCallback(
+    (selected: MENU_PROPS) => {
+      setSelectedMenu(selected);
+    },
+    [setSelectedMenu],
+  );
 
-  const onClickMenu = (selected: MENU_PROPS) => {
-    setSelectedMenu(selected);
-  };
   return (
     <Container width="200px">
       <LogoBox>Utils.</LogoBox>

@@ -1,51 +1,97 @@
-import React, { useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../Atoms/Button';
+import JSONFormattter from 'json-formatter-js';
 
-const Box = styled.div`
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  background-color: green;
-`;
-
-const Container = styled.div`
+const Container = styled.div``;
+const TextAreaContainer = styled.div`
+  height: 100%;
   display: flex;
-  flex-direction: column;
+  & > * {
+    margin-right: 6px;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+`;
+const TextArea = styled.textarea`
+  width: 100%;
+  height: 40vh;
+  overflow: auto;
+  resize: none;
+`;
+const ButtonBar = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 6px 0;
 `;
 
-const TitleBar = styled.div`
-  padding: 8px 14px;
-  font-size: 1.4em;
-  margin-bottom: 8px;
-  height: 38px;
+const ResultContainer = styled.div`
+  box-sizing: border-box;
+  padding-top: 14px;
+  background-color: var(--white);
+  color: var(--black);
+  height: 35vh;
+  user-select: text;
+  overflow: auto;
 `;
 
-const ContentContainer = styled.div`
-  padding: 10px 18px;
-`;
+interface IProps {}
 
-const title = 'Differrence Object';
+const DifferenceObject: FC<IProps> = () => {
+  const [leftContent, setLeftContent] = useState('');
+  const [rightContent, setRightContent] = useState('');
+  const [resultContent, setResultContent] = useState('');
 
-const DifferenceObject = () => {
-  const [cnt, setCnt] = useState<number>(0);
+  const onBlur = useCallback(
+    (e: React.FocusEvent<HTMLTextAreaElement>, type: 'L' | 'R') => {
+      if (type === 'L') {
+        setLeftContent(e.target.value);
+      } else {
+        setRightContent(e.target.value);
+      }
+    },
+    [],
+  );
 
-  const countUp = () => {
-    setCnt(cnt + 1);
-  };
+  const compareObjects = useCallback(() => {
+    try {
+      leftContent.replaceAll('"', '/"');
+      rightContent.replaceAll('"', '/"');
+
+      const leftObj = JSON.parse(leftContent);
+      const rightObj = JSON.parse(rightContent);
+
+      if (typeof leftObj === 'object' && typeof rightObj === 'object') {
+        // console.log({ leftObj, rightObj });
+        document
+          .querySelector('#json-my')
+          ?.appendChild(new JSONFormattter(leftContent).render());
+      }
+    } catch (error: any) {
+      if (error.message && (error.message as string).includes('valid JSON')) {
+        setResultContent('유효한 JSON 형식이 아니랍니다.');
+      }
+    }
+  }, [leftContent, rightContent]);
+
   return (
     <Container>
-      <TitleBar>{title}</TitleBar>
-      <ContentContainer>
-        {cnt}
-        <div>
-          <Button cb={countUp}>count + 1</Button>
-        </div>
-        {!!cnt &&
-          Array(cnt)
-            .fill(1)
-            .map((_, index) => <Box key={index} />)}
-      </ContentContainer>
+      <TextAreaContainer>
+        <TextArea onBlur={(e) => onBlur(e, 'L')} />
+        <TextArea onBlur={(e) => onBlur(e, 'R')} />
+      </TextAreaContainer>
+      <ButtonBar>
+        <Button color="orange" cb={compareObjects}>
+          compare
+        </Button>
+      </ButtonBar>
+      <ResultContainer>
+        {resultContent}
+        {leftContent}
+        {rightContent}
+        <div id="json-my"></div>
+      </ResultContainer>
     </Container>
   );
 };

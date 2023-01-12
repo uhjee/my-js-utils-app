@@ -4,7 +4,6 @@ export const GlobalStyle = createGlobalStyle`
     body {
         margin: 0;
         padding: 0;
-
-        color: var(--default-font-color)
+        color: var(--white)
     }
 `;

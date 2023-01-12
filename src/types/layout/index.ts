@@ -1,4 +1,5 @@
 export enum MENU_PROPS {
   DIFF_OBJECT = 'DIFF_OBJECT',
+  MYBATIS_PARSER = 'MYBATIS_PARSER',
   ETC = 'ETC',
 }

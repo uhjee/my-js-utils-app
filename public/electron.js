@@ -28,8 +28,9 @@ function createWindow() {
       slashes: true,
     });
 
-    win.loadURL(startUrl);
-    win.webContents.openDevTools(); // activiate devtool
+  win.loadURL(startUrl);
+  win.webContents.openDevTools(); // activiate devtool
+  win.setMenu(null);
 }
 
 app.on('ready', createWindow);
