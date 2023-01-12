@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <BasicFrame></BasicFrame>
+      <BasicFrame/>
     </>
   );
 }

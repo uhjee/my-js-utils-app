@@ -1,14 +1,17 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, {FC, useCallback, useState} from 'react';
 import styled from 'styled-components';
 import Button from '../Atoms/Button';
-import JSONFormattter from 'json-formatter-js';
+import {getDiffPropsDeepEqual} from '../services/functions';
+import stringify from 'json-stringify-pretty-compact';
 
 const Container = styled.div``;
 const TextAreaContainer = styled.div`
   height: 100%;
   display: flex;
+
   & > * {
     margin-right: 6px;
+
     &:last-child {
       margin-right: 0;
     }
@@ -36,7 +39,8 @@ const ResultContainer = styled.div`
   overflow: auto;
 `;
 
-interface IProps {}
+interface IProps {
+}
 
 const DifferenceObject: FC<IProps> = () => {
   const [leftContent, setLeftContent] = useState('');
@@ -45,11 +49,11 @@ const DifferenceObject: FC<IProps> = () => {
 
   const onBlur = useCallback(
     (e: React.FocusEvent<HTMLTextAreaElement>, type: 'L' | 'R') => {
-      if (type === 'L') {
+      if (type === 'L')
         setLeftContent(e.target.value);
-      } else {
+      else
         setRightContent(e.target.value);
-      }
+
     },
     [],
   );
@@ -63,10 +67,8 @@ const DifferenceObject: FC<IProps> = () => {
       const rightObj = JSON.parse(rightContent);
 
       if (typeof leftObj === 'object' && typeof rightObj === 'object') {
-        // console.log({ leftObj, rightObj });
-        document
-          .querySelector('#json-my')
-          ?.appendChild(new JSONFormattter(leftContent).render());
+        setResultContent(stringify(getDiffPropsDeepEqual(leftObj, rightObj)));
+
       }
     } catch (error: any) {
       if (error.message && (error.message as string).includes('valid JSON')) {
@@ -78,8 +80,8 @@ const DifferenceObject: FC<IProps> = () => {
   return (
     <Container>
       <TextAreaContainer>
-        <TextArea onBlur={(e) => onBlur(e, 'L')} />
-        <TextArea onBlur={(e) => onBlur(e, 'R')} />
+        <TextArea onBlur={(e) => onBlur(e, 'L')}/>
+        <TextArea onBlur={(e) => onBlur(e, 'R')}/>
       </TextAreaContainer>
       <ButtonBar>
         <Button color="orange" cb={compareObjects}>
@@ -88,6 +90,7 @@ const DifferenceObject: FC<IProps> = () => {
       </ButtonBar>
       <ResultContainer>
         {resultContent}
+        <br/>
         {leftContent}
         {rightContent}
         <div id="json-my"></div>
