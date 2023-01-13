@@ -36,20 +36,10 @@ interface IMenu {
   prop: MENU_PROPS;
 }
 
-const MENUS: IMenu[] = [
-  {
-    title: TITLE_TEXT.DIFF_OBJECT,
-    prop: MENU_PROPS.DIFF_OBJECT,
-  },
-  {
-    title: TITLE_TEXT.MYBATIS_PARSER,
-    prop: MENU_PROPS.MYBATIS_PARSER,
-  },
-  {
-    title: TITLE_TEXT.ETC,
-    prop: MENU_PROPS.ETC,
-  },
-];
+const MENUS: IMenu[] = Object.keys(MENU_PROPS).map((key) => ({
+  title: TITLE_TEXT[key as keyof typeof MENU_PROPS],
+  prop: key as MENU_PROPS,
+}));
 
 interface IProps {
   selectedMenu: MENU_PROPS;

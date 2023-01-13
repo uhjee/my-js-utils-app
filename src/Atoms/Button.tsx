@@ -1,4 +1,10 @@
-import React, { FC, MouseEventHandler, ReactNode, useCallback } from 'react';
+import React, {
+  FC,
+  memo,
+  MouseEventHandler,
+  ReactNode,
+  useCallback,
+} from 'react';
 import styled from 'styled-components';
 
 type Color = 'orange' | 'grey' | 'white';
@@ -42,14 +48,14 @@ const Btn = styled.div<{ color: Color }>`
 interface IProps {
   children: ReactNode;
   color?: Color;
-  cb: (...args: any[]) => void;
+  cb: React.MouseEventHandler<HTMLDivElement>;
 }
 
-const Button: FC<IProps> = ({ color = 'grey', children, cb }) => {
+const Button: FC<IProps> = memo(({ color = 'grey', children, cb }) => {
   const onClickBtn: MouseEventHandler<HTMLDivElement> = useCallback(
     (e) => {
       e.stopPropagation();
-      cb();
+      cb(e);
     },
     [cb],
   );
@@ -59,6 +65,6 @@ const Button: FC<IProps> = ({ color = 'grey', children, cb }) => {
       {children}
     </Btn>
   );
-};
+});
 
 export default Button;

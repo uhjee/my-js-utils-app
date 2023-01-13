@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, memo, ReactNode } from 'react';
 import styled from 'styled-components';
 
 interface IProps {
@@ -16,8 +16,8 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const TitleBar: FC<IProps> = ({ children }) => {
+const TitleBar: FC<IProps> = memo(({ children }) => {
   return <Container>{children}</Container>;
-};
+});
 
 export default TitleBar;

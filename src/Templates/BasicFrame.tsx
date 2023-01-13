@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { TITLE_TEXT } from '../constants/layout';
 import DifferenceObject from '../Organisms/DifferenceObject';
 import Etc from '../Organisms/Etc';
+import Report from '../Organisms/Report';
 import SideBar from '../Organisms/SideBar';
 import TitleBar from '../Organisms/TitleBar';
 import { MENU_PROPS } from '../types/layout';
@@ -33,7 +34,8 @@ const BasicFrame: FC<IProps> = ({ children }) => {
         return <DifferenceObject />;
       case MENU_PROPS.ETC:
         return <Etc />;
-
+      case MENU_PROPS.REPORT:
+        return <Report />;
       default:
         break;
     }
