@@ -42,7 +42,15 @@ const BasicFrame: FC<IProps> = ({ children }) => {
   }, [selectedMenu]);
 
   const titleTextBySelectedMenu = useMemo(
-    () => TITLE_TEXT[selectedMenu],
+    () =>
+      selectedMenu === MENU_PROPS.REPORT
+        ? `${TITLE_TEXT[selectedMenu]} (${new Intl.DateTimeFormat('KO-KR', {
+            day: 'numeric', // 날도 숫자로
+            month: 'long', // 달은 글자로
+            year: 'numeric', // 연도는 숫자로
+            weekday: 'long', // 요일은 글자로
+          }).format(new Date())})`
+        : TITLE_TEXT[selectedMenu],
     [selectedMenu],
   );
 
