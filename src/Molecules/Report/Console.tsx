@@ -1,15 +1,34 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../Atoms/Button';
 import { IJob, JOB_TYPE, STATUS_TYPE } from '../../types/report';
 
 const Container = styled.div`
   margin-top: 20px;
+  position: relative;
+`;
+
+const CopyButton = styled(Button)`
+  position: absolute;
+  right: 3%;
+  top: 26px;
+  border-radius: 8px;
+`;
+
+const TextArea = styled.textarea`
+  width: 100%;
+  height: 50vh;
+  box-sizing: border-box;
+  margin-top: 16px;
   background-color: var(--black-cool);
   border: 1px solid var(--white);
   border-radius: 6px;
   padding: 8px 12px;
   user-select: text;
+  overflow: auto;
+  resize: none;
+  color: var(--white);
+  font-size: 1.28em;
 `;
 
 interface IProps {
@@ -29,87 +48,21 @@ const getSiteReportText = (text: string) => {
     if (text[i] === '[') {
       grammarCnt++;
       isOpen = true;
-    } else if (text[i] === ']') {
+    }
+    if ((grammarCnt === 2 && isOpen) || (grammarCnt > 1 && !isOpen))
+      result += text[i];
+
+    if (text[i] === ']') {
       isOpen = false;
     }
-    if ((grammarCnt === 2 && isOpen) || (grammarCnt === 3 && !isOpen))
-      result += text[i];
   }
   return result;
 };
 
 const Console: FC<IProps> = ({ jobs }) => {
-  const flawJobs = useMemo(() => {
-    const refers = jobs.filter(
-      (j) => j.jobType === JOB_TYPE.FLAW && j.statusType === STATUS_TYPE.REFER,
-    );
-    const ings = jobs.filter(
-      (j) => j.jobType === JOB_TYPE.FLAW && j.statusType === STATUS_TYPE.ING,
-    );
-    return (
-      <>
-        <div> &gt; 결함처리</div>
-        <div>- 반려 {refers.length}건</div>
-        {refers && refers.length > 0 ? (
-          refers.map((j, i) => (
-            <div key={i}>
-              {j.text} {getLabelMyNameAndProgress()}
-            </div>
-          ))
-        ) : (
-          <div>없음</div>
-        )}
-        <br />
-        <div>- 진행 {ings.length}건</div>
-        {ings && ings.length > 0 ? (
-          ings.map((j, i) => (
-            <div key={i}>
-              {j.text} {getLabelMyNameAndProgress(j.progress)}
-            </div>
-          ))
-        ) : (
-          <div>없음</div>
-        )}
-      </>
-    );
-  }, [jobs]);
-  const siteJobs = useMemo(() => {
-    const refers = jobs.filter(
-      (j) => j.jobType === JOB_TYPE.SITE && j.statusType === STATUS_TYPE.REFER,
-    );
-    const ings = jobs.filter(
-      (j) => j.jobType === JOB_TYPE.SITE && j.statusType === STATUS_TYPE.ING,
-    );
-    return (
-      <>
-        <div> &gt; 사이트 지원</div>
-        <div>- 반려 {refers.length}건</div>
-        {refers && refers.length > 0 ? (
-          refers.map((j, i) => (
-            <div key={i}>
-              {getSiteReportText(j.text)} {getLabelMyNameAndProgress()}
-            </div>
-          ))
-        ) : (
-          <div>없음</div>
-        )}
-        <br />
-        <div>- 진행 {ings.length}건</div>
-        {ings && ings.length > 0 ? (
-          ings.map((j, i) => (
-            <div key={i}>
-              {getSiteReportText(j.text)}{' '}
-              {getLabelMyNameAndProgress(j.progress)}
-            </div>
-          ))
-        ) : (
-          <div>없음</div>
-        )}
-      </>
-    );
-  }, [jobs]);
+  const [consoleValue, setConsoleValue] = useState('');
 
-  const getTitle = useCallback(() => {
+  const title = useMemo(() => {
     const today = new Date();
     const y = today.getFullYear();
     const m =
@@ -122,25 +75,99 @@ const Console: FC<IProps> = ({ jobs }) => {
     return `[${y}-${m}-${d} 일간보고]`;
   }, []);
 
+  const flawJobs = useMemo(() => {
+    const refers = jobs.filter(
+      (j) => j.jobType === JOB_TYPE.FLAW && j.statusType === STATUS_TYPE.REFER,
+    );
+    const ings = jobs.filter(
+      (j) => j.jobType === JOB_TYPE.FLAW && j.statusType === STATUS_TYPE.ING,
+    );
+    return `
+> 결함처리
+- 반려${refers.length > 0 ? ` (${refers.length}건)` : ''}
+${
+  refers && refers.length > 0
+    ? refers
+        .map((j, i) => `${j.text} ${getLabelMyNameAndProgress()}`)
+        .join(`\n`)
+    : `없음`
+}
+
+- 진행${ings.length > 0 ? ` (${ings.length}건)` : ''}
+${
+  ings && ings.length > 0
+    ? ings
+        .map((j, i) => `${j.text} ${getLabelMyNameAndProgress(j.progress)}`)
+        .join(`\n`)
+    : `없음`
+}
+      `;
+  }, [jobs]);
+
+  const siteJobs = useMemo(() => {
+    const refers = jobs.filter(
+      (j) => j.jobType === JOB_TYPE.SITE && j.statusType === STATUS_TYPE.REFER,
+    );
+    const ings = jobs.filter(
+      (j) => j.jobType === JOB_TYPE.SITE && j.statusType === STATUS_TYPE.ING,
+    );
+    return `
+> 사이트 지원
+- 반려${refers.length > 0 ? ` (${refers.length}건)` : ''}
+${
+  refers && refers.length > 0
+    ? refers
+        .map(
+          (j, i) =>
+            `${getSiteReportText(j.text)} ${getLabelMyNameAndProgress()}`,
+        )
+        .join(`\n`)
+    : `없음`
+}
+
+- 진행${ings.length > 0 ? ` (${ings.length}건)` : ''}
+${
+  ings && ings.length > 0
+    ? ings
+        .map(
+          (j, i) =>
+            `${getSiteReportText(j.text)} ${getLabelMyNameAndProgress(
+              j.progress,
+            )}`,
+        )
+        .join(`\n`)
+    : `없음`
+}`;
+  }, [jobs]);
+
+  useEffect(() => {
+    const value = `${title}
+${flawJobs}
+${siteJobs}`;
+    setConsoleValue(value);
+  }, [title, siteJobs, flawJobs]);
+
   const copyClipBoard = () => {
-    const textData = document.querySelector('#report')?.textContent;
-    if (textData) window.navigator.clipboard.writeText(textData);
+    const textData = document.querySelector(
+      '#report-console',
+    ) as HTMLTextAreaElement;
+    if (textData?.value) window.navigator.clipboard.writeText(textData.value);
   };
 
   return (
     <>
-      <Button color="orange" cb={copyClipBoard}>
-        copy
-      </Button>
-      <Container id="report">
-        {getTitle()} <br />
-        <br />
-        {flawJobs} <br />
-        {siteJobs}
+      <Container>
+        <CopyButton color="orange" cb={copyClipBoard}>
+          copy
+        </CopyButton>
+        <TextArea
+          id="report-console"
+          defaultValue={consoleValue}
+          spellCheck={false}
+        />
       </Container>
     </>
   );
 };
 
 export default Console;
-

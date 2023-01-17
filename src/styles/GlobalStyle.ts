@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
     body {
@@ -6,4 +6,8 @@ export const GlobalStyle = createGlobalStyle`
         padding: 0;
         color: var(--white)
     }
+`;
+
+export const ButtonBar = styled.div`
+  margin-bottom: 16px;
 `;

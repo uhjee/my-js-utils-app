@@ -10,6 +10,7 @@ const Btn = styled.div<{ color: Color }>`
   box-sizing: border-box;
   display: inline-block;
   padding: 4px 8px;
+  text-align: center;
   margin: 2px 4px;
   cursor: pointer;
   user-select: none;
@@ -41,11 +42,17 @@ const Btn = styled.div<{ color: Color }>`
 
 interface IProps {
   children: ReactNode;
-  color?: Color;
   cb: React.MouseEventHandler<HTMLDivElement>;
+  color?: Color;
+  className?: string | undefined;
 }
 
-const Button: FC<IProps> = ({ color = 'grey', children, cb }) => {
+const Button: FC<IProps> = ({
+  color = 'grey',
+  children,
+  cb,
+  className = '',
+}) => {
   const onClickBtn: MouseEventHandler<HTMLDivElement> = useCallback(
     (e) => {
       e.stopPropagation();
@@ -55,7 +62,7 @@ const Button: FC<IProps> = ({ color = 'grey', children, cb }) => {
   );
 
   return (
-    <Btn color={color} onClick={onClickBtn}>
+    <Btn className={className} color={color} onClick={onClickBtn}>
       {children}
     </Btn>
   );
