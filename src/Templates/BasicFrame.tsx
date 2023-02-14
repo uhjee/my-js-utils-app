@@ -1,12 +1,14 @@
 import React, { FC, ReactNode, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { TITLE_TEXT } from '../constants/layout';
-import DifferenceObject from '../Organisms/DifferenceObject';
-import Etc from '../Organisms/Etc';
-import Report from '../Organisms/Report';
-import SideBar from '../Organisms/SideBar';
-import TitleBar from '../Organisms/TitleBar';
+import DifferenceObject from './differentObject/DifferenceObject';
+import Etc from './etc/Etc';
+import Report from './report/Report';
+import SideBar from '../Organisms/common/SideBar';
+import TitleBar from '../Organisms/common/TitleBar';
 import { MENU_PROPS } from '../types/layout';
+import MybatisParserL from './mybatisParser/mybatisParser';
+import MybatisParser from './mybatisParser/mybatisParser';
 
 const Container = styled.div`
   display: flex;
@@ -32,10 +34,12 @@ const BasicFrame: FC<IProps> = ({ children }) => {
     switch (selectedMenu) {
       case MENU_PROPS.DIFF_OBJECT:
         return <DifferenceObject />;
-      case MENU_PROPS.ETC:
-        return <Etc />;
       case MENU_PROPS.REPORT:
         return <Report />;
+      case MENU_PROPS.MYBATIS_PARSER:
+        return <MybatisParser />;
+      case MENU_PROPS.ETC:
+        return <Etc />;
       default:
         break;
     }

@@ -17,7 +17,7 @@ function createWindow() {
     webPreferences: {
       enableRemoteModule: true,
       // preload 기능 활성화 - react app 과 electron 간의 ipc 통신하도록 설정
-      preload: __dirname + '/preload.js',
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
 
@@ -36,14 +36,18 @@ function createWindow() {
   win.setMenu(null);
 }
 
-app.on('ready', createWindow);
+// app.on('ready', createWindow);
+app.whenReady().then(() => {
+  createWindow();
+
+  // macOS의 경우, window가 닫혀도 계속해서 running - 다라서 window count 체크
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  });
+});
 
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {
     app.quit();
   }
-});
-
-app.on('active', function () {
-  if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });

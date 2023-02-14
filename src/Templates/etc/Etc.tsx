@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import styled from 'styled-components';
-import Button from '../Atoms/Button';
+import Button from '../../Atoms/Button';
 
 const Box = styled.div`
   display: inline-block;

@@ -1,7 +1,7 @@
 import React, {FC, useCallback, useState} from 'react';
 import styled from 'styled-components';
-import Button from '../Atoms/Button';
-import {getDiffPropsDeepEqual} from '../services/functions';
+import Button from '../../Atoms/Button';
+import {getDiffPropsDeepEqual} from '../../services/functions';
 import stringify from 'json-stringify-pretty-compact';
 
 const Container = styled.div``;

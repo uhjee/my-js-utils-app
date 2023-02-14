@@ -1,10 +1,10 @@
 import React, { FC, useState } from 'react';
 import styled from 'styled-components';
-import Button from '../Atoms/Button';
-import Console from '../Molecules/Report/Console';
-import Job from '../Molecules/Report/Job';
-import { ButtonBar } from '../styles/GlobalStyle';
-import { IJob, JOB_TYPE, PROGRESS, STATUS_TYPE } from '../types/report';
+import Button from '../../Atoms/Button';
+import Console from '../../Molecules/Report/Console';
+import Job from '../../Molecules/Report/Job';
+import { ButtonBar } from '../../styles/GlobalStyle';
+import { IJob, JOB_TYPE, PROGRESS, STATUS_TYPE } from '../../types/report';
 
 const JobListContainer = styled.div`
   & > * {

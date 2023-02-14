@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
-import { TITLE_TEXT } from '../constants/layout';
-import { MENU_PROPS } from '../types/layout';
+import { TITLE_TEXT } from '../../constants/layout';
+import { MENU_PROPS } from '../../types/layout';
 
 const Container = styled.aside<{ width: string }>`
   border-right: 1px solid var(--warm-grey);
