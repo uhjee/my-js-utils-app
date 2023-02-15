@@ -28,3 +28,12 @@
 - BrowserWindow의 preload script는 DOM에 접근이 가능하고, 몇몇의 Node.js와 electron API에 접근이 가능
 - preload script는 페이지가 rendering 되기 전에 주입
 - contextBridge API를 통해 global 객체를 정의 가능
+
+
+## Communicating betwen process
+- main, renderer process는 각각 책임과 역할이 다름
+    - renderer process 는 Node.js에 바로 접근할 수 없음
+    - main process는 DOM에 바로 접근할 수 없음
+- 따라서 preload script에  *ipcMin*, *ipcRenderer* 모듈을 사용해 소통(inter-process communication)
+- main process는 `ipcMain.handle` 을 통해 이벤트 핸들링
+- renderer process는 `ipcRenderer.invoke` 노출

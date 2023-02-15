@@ -1,4 +1,4 @@
-const { app, BrowserWindow, protocol } = require('electron');
+const { app, BrowserWindow, protocol, ipcMain } = require('electron');
 const path = require('path');
 const url = require('url');
 const dotenv = require('dotenv');
@@ -15,10 +15,18 @@ function createWindow() {
     width: 1920 * 0.6,
     height: 1080 * 0.6,
     webPreferences: {
+      nodeIntegration: true, // renderder에서 nodejs 사용 가능
+      contextIsolation: false,
       enableRemoteModule: true,
       // preload 기능 활성화 - react app 과 electron 간의 ipc 통신하도록 설정
       preload: path.join(__dirname, 'preload.js'),
     },
+  });
+
+  // ipc Module handler
+  ipcMain.on('ping', (event, ...args) => {
+    console.log({ event, args });
+    return 'lalala';
   });
 
   const startUrl = isDev
